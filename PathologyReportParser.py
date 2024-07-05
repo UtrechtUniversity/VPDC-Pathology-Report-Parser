@@ -6,7 +6,7 @@ import re
 from datetime import datetime
 from pathlib import Path
 
-class VeterinaryReportParser:
+class PathologyReportParser:
 
     meta_categories_1 = ['Afnamedatum', 'Aanvrager', 'Ordernummer', 'Relatiecode', 'Clinicus', 'Uw referentie', ':']
     meta_categories_2 = ['Geboortedatum', 'Diernaam', 'Soort/Ras', 'Geslacht', 'Eigenaar', ':']
@@ -184,7 +184,7 @@ if __name__=="__main__":
     parser.add_argument('--animal-type', type=str, default='hond')
     args=parser.parse_args()
 
-    vrp = VeterinaryReportParser(animal_type=args.animal_type)
+    prp = PathologyReportParser(animal_type=args.animal_type)
     root = args.input_path
 
     data = []
@@ -193,8 +193,8 @@ if __name__=="__main__":
             file = Path(os.path.join(path, name))
             print(f"Processing {file}")
             if file.suffix==".pdf":
-                vrp.read_file(Path(root) / file)
-                meta, main = vrp.get_data()
+                prp.read_file(Path(root) / file)
+                meta, main = prp.get_data()
                 data.append(meta | main)
 
     fieldnames = list(data[0].keys())

@@ -14,7 +14,7 @@ Requires Python 3.9 or higher, and [pypdfium](https://pypi.org/project/pypdfium2
 ## Usage
 
 ```bash
-usage: PathologicalReportParser.py [-h] -i INPUT_PATH [--animal-type ANIMAL_TYPE]
+usage: PathologyReportParser.py.py [-h] -i INPUT_PATH [--animal-type ANIMAL_TYPE]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -26,7 +26,7 @@ optional arguments:
 
 Example:
 ```bash
-python PathologicalReportParser.py -i '/data/reports/'
+python PathologyReportParser.py.py -i '/data/reports/'
 ```
 The program will traverse the folder `/data/reports/` and all its subfolders, find all PDF's, and try to parse them. It is assumed all PDF files are veterinary reports; anything else will probably generate errors.
 
@@ -34,7 +34,7 @@ When using the script for other types of animal, the type of animal has to corre
 
 For instance, if the report says : `Soort/Ras: Kat/Perzische korthaar` the program would have to be run as:
 ```bash
-python PathologicalReportParser.py -i '/data/reports/' --animal-type kat
+python PathologyReportParser.py.py -i '/data/reports/' --animal-type kat
 ```
 If you have reports on different types of animals, sort them by animal first, and then run the script independently for each set of documents.
 

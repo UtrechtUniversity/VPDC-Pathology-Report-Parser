@@ -28,7 +28,7 @@ Example:
 ```bash
 python PathologicalReportParser.py -i '/data/reports/'
 ```
-The program will traverse the folder `/data/reports/` and all its subfolders, find all PDF's, and try to parse them. It is assumed all PDF files are veterinary reports; anything else will probably cause an error.
+The program will traverse the folder `/data/reports/` and all its subfolders, find all PDF's, and try to parse them. It is assumed all PDF files are veterinary reports; anything else will probably generate errors.
 
 When using the script for other types of animal, the type of animal has to correspond to the wording in the document (case insensitive). Open a report and look up the value of the field 'Soort/Ras' in the purple box at the top right of the page, and use the part before the slash. 
 

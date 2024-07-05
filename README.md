@@ -9,7 +9,7 @@ The script was written using pathologies all relating to dogs, but theoretically
 
 ## Prerequisites
 
-Requires Python 3.0 or higher, and [pypdfium](https://pypi.org/project/pypdfium2/) for PDF parsing (run `pip install -r requirements.txt` to install).
+Requires Python 3.9 or higher, and [pypdfium](https://pypi.org/project/pypdfium2/) for PDF parsing (run `pip install -r requirements.txt` to install).
 
 ## Usage
 

@@ -1,43 +1,50 @@
-# re-simple-python-project
+# VPDC Pathology Report Parser
 
-This simple project structure template repository is adapted from the [Good Enough Project](https://github.com/bvreede/good-enough-project) Cookiecutter template by Barbara Vreede (2019).
-If you plan to develop a package, check the [template repository for a Python package](https://github.com/UtrechtUniversity/re-python-package).
+## Description
+
+The script extracts data from standard pathology reports from the UU's VDPC ([Veterinair Pathologisch Diagnostisch Centrum](https://www.uu.nl/onderzoek/veterinair-pathologisch-diagnostisch-centrum)), provided as PDF files.
+
+## Prerequisites
+
+Requires Python 3.0 or higher, and [pypdfium](https://pypi.org/project/pypdfium2/) for PDF parsing (run `pip install -r requirements.txt` to install).
 
 ## Usage
 
-Click "Use this template" at the top of this page to create a new repository with the same folder structure.
+```bash
+usage: PathologicalReportParser.py [-h] -i INPUT_PATH
 
-## Project Structure
-
-The project structure distinguishes three kinds of folders:
-- read-only (RO): not edited by either code or researcher
-- human-writeable (HW): edited by the researcher only.
-- project-generated (PG): folders generated when running the code; these folders can be deleted or emptied and will be completely reconstituted as the project is run.
-
-
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INPUT_PATH, --input-path INPUT_PATH
+                        Folder with veterinary report PDF's (can be recursive)
 ```
-.
-├── .gitignore
-├── LICENSE
-├── README.md
-├── requirements.txt
-├── data               <- All project data, ignored by git
-│   ├── processed      <- The final, canonical data sets for modeling. (PG)
-│   ├── raw            <- The original, immutable data dump. (RO)
-│   └── temp           <- Intermediate data that has been transformed. (PG)
-├── docs               <- Documentation notebook for users (HW)
-│   ├── manuscript     <- Manuscript source, e.g., LaTeX, Markdown, etc. (HW)
-│   └── reports        <- Other project reports and notebooks (e.g. Jupyter, .Rmd) (HW)
-├── results
-│   ├── figures        <- Figures for the manuscript or reports (PG)
-│   └── output         <- Other output for the manuscript or reports (PG)
-└── src                <- Source code for this project (HW)
-
+Example:
+```bash
+python VetReportParser.py -i '/data/reports/'
 ```
+The program will traverse the folder `/data/reports/` and all its subfolders, find all PDF's, and try to parse them. It is assumed all PDF files are veterinary reports; anything else will probably cause an error.
 
-## Add a citation file
-Create a citation file for your repository using [cffinit](https://citation-file-format.github.io/cff-initializer-javascript/#/)
+## Output
 
-## License
+The program will output a .tsv file in the input path; the file name will include the current date and time (example: `data--2024-07-05_10-37-36.tsv`).
 
-This project is licensed under the terms of the [MIT License](/LICENSE).
+The output file will for each input file contain the following data points, if they were present in the document:
+
+_Meta data (blue boxes at the top of the document)_
++ `Bestand` (file name)
++ `Ordernr` (order number)
++ `Datum order` (order date)
++ `Datum def` (definitive date)
++ `Soort/ras` (species)
++ `DoB hond` (date of birth dog)
++ `Chipnummer` (chipnumber) 
++ `Geslacht` (gender)
+
+_Main data_
++ `Klinische gegevens` (clinical data)
++ `Ingezonden materialen` (submitted materials)
++ `Conclusie` (conclusion)
++ `Macroscopie` (macroscopy)
++ `Microscopie` (mocroscopy)
++ `Verantwoordelijk` (responsible veterinarian)
++ `Opmerkingen` (remarks)

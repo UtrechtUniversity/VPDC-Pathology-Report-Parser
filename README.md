@@ -4,7 +4,7 @@
 
 The script extracts data from standard pathology reports from the UU's VDPC ([Veterinair Pathologisch Diagnostisch Centrum](https://www.uu.nl/onderzoek/veterinair-pathologisch-diagnostisch-centrum)), provided as PDF files.
 
-The script was written using pathologies all relating to dogs, but theoretically it should also work for reports on other amnimals. See the Usage-section for details.
+The script was written using pathologies all relating to dogs, but theoretically it should also work for reports on other animals (untested). See the Usage-section for details.
 
 
 ## Prerequisites
@@ -34,7 +34,7 @@ When using the script for other types of animal, the type of animal has to corre
 
 For instance, if the report says : `Soort/Ras: Kat/Perzische korthaar` the program would have to be run as:
 ```bash
-python PathologicalReportParser.py -i '/data/reports/' --animal-type cat
+python PathologicalReportParser.py -i '/data/reports/' --animal-type kat
 ```
 If you have reports on different types of animals, sort them by animal first, and then run the script independently for each set of documents.
 
@@ -60,7 +60,7 @@ _Main data_
 + `Ingezonden materialen` (submitted materials)
 + `Conclusie` (conclusion)
 + `Macroscopie` (macroscopy)
-+ `Microscopie` (mocroscopy)
++ `Microscopie` (microscopy)
 + `Verantwoordelijk` (responsible veterinarian)
 + `Opmerkingen` (remarks)
 

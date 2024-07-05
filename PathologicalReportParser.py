@@ -11,6 +11,9 @@ class VeterinaryReportParser:
     meta_categories_1 = ['Afnamedatum', 'Aanvrager', 'Ordernummer', 'Relatiecode', 'Clinicus', 'Uw referentie', ':']
     meta_categories_2 = ['Geboortedatum', 'Diernaam', 'Soort/Ras', 'Geslacht', 'Eigenaar', ':']
 
+    def __init__(self, animal_type='hond'):
+        self.animal_type = animal_type
+
     def read_file(self, filename):
         self.pdf = pdfium.PdfDocument(filename)
         self.file_name = os.path.basename(filename)
@@ -21,7 +24,7 @@ class VeterinaryReportParser:
         return meta, data
 
     def get_meta_data(self, page):
-        # get the data from the blue boxes at the top of the page
+        # get the data from the purple boxes at the top of the page
 
         # # use the bitmap to get the coordinates of the boxes at the top 
         # # of the page (be aware that the in the PDF [0,0] is bottom left)
@@ -38,10 +41,10 @@ class VeterinaryReportParser:
         date_order = ''
         date_def = ''
 
-        dog_dob = ''
-        dog_chipnummer = ''
-        dog_gender = ''
-        dog_species = ''
+        animal_dob = ''
+        animal_chipnummer = ''
+        animal_gender = ''
+        animal_species = ''
         names = []
 
         #l,b,r,t
@@ -90,28 +93,28 @@ class VeterinaryReportParser:
         data = list(filter(lambda x: x.strip() not in self.meta_categories_2, data))
 
         p_chipnr = re.compile("chipnummer", re.IGNORECASE)
-        s_dog = 'hond'
+        s_animal = self.animal_type
 
         for d in data:
             if 'chipnummer' in d.lower():
-                dog_chipnummer = p_chipnr.sub('', d).strip()
+                animal_chipnummer = p_chipnr.sub('', d).strip()
                 continue
 
             try:
-                dog_dob = datetime.strptime(d,"%d-%m-%Y")
+                animal_dob = datetime.strptime(d,"%d-%m-%Y")
                 continue
             except:
                 pass
 
             for g in ['mannelijk', 'vrouwelijk', 'man', 'vrouw', 'onbekend']:
                 if g.lower() in d.lower():
-                    dog_gender = d
+                    animal_gender = d
                     break
-            if len(dog_gender)>0:
+            if len(animal_gender)>0:
                 continue
 
-            if d[:len(s_dog)].lower()==s_dog:
-                dog_species = d
+            if d[:len(s_animal)].lower()==s_animal:
+                animal_species = d
                 continue
 
             names.append(d)
@@ -121,10 +124,10 @@ class VeterinaryReportParser:
             'Ordernr': ordernr,
             'Datum order': date_order,
             'Datum def': date_def,
-            'Soort/ras': dog_species,
-            'DoB hond': dog_dob, 
-            'Chipnummer': dog_chipnummer,
-            'Geslacht': dog_gender
+            'Soort/ras': animal_species,
+            'Geboortedatum': animal_dob, 
+            'Chipnummer': animal_chipnummer,
+            'Geslacht': animal_gender
             }
 
         return out
@@ -143,7 +146,8 @@ class VeterinaryReportParser:
             except:
                 break
 
-        document_headers = ['Klinische gegevens', 'Ingezonden materialen', 'Conclusie', 'Macroscopie', 'Microscopie', 'Verantwoordelijk', 'Opmerkingen']
+        document_headers = ['Klinische gegevens', 'Ingezonden materialen', 'Conclusie', 'Macroscopie', 
+                            'Microscopie', 'Verantwoordelijk', 'Opmerkingen']
 
         data = {}
         lines = []
@@ -177,9 +181,10 @@ if __name__=="__main__":
 
     parser=argparse.ArgumentParser()
     parser.add_argument('-i', '--input-path', type=str, required=True, help='Folder with veterinary report PDF\'s (can be recursive)')
+    parser.add_argument('--animal-type', type=str, default='hond')
     args=parser.parse_args()
 
-    vrp = VeterinaryReportParser()
+    vrp = VeterinaryReportParser(animal_type=args.animal_type)
     root = args.input_path
 
     data = []
